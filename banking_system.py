@@ -5,10 +5,19 @@ import tkinter as tk
 from tkinter import messagebox
 import random
 from datetime import datetime
+import bcrypt
+import logging
+
+# Configure logging
+logging.basicConfig(filename='banking_system.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class Admin:
     def __init__(self, db_connection):
-        self.db_connection = db_connection
+        try:
+            self.db_connection = db_connection
+        except mysql.connector.Error as err:
+            logging.error(f"Error connecting to database: {err}")
+            raise
 
     def create_account(self, account_details):
         cursor = self.db_connection.cursor()
@@ -64,8 +73,12 @@ class Admin:
 
 class Customer:
     def __init__(self, db_connection, account_id):
-        self.db_connection = db_connection
-        self.account_id = account_id
+        try:
+            self.db_connection = db_connection
+            self.account_id = account_id
+        except mysql.connector.Error as err:
+            logging.error(f"Error connecting to database: {err}")
+            raise
 
     def deposit(self, amount):
         cursor = self.db_connection.cursor()
@@ -88,6 +101,14 @@ class Customer:
         balance = cursor.fetchone()[0]
         cursor.close()
         return balance
+
+    def transaction_history(self):
+        cursor = self.db_connection.cursor()
+        query = "SELECT amount, transaction_type, transaction_date FROM transactions WHERE customer_id = %s"
+        cursor.execute(query, (self.account_id,))
+        transactions = cursor.fetchall()
+        cursor.close()
+        return transactions
 
 def visualize_data(db_connection):
     cursor = db_connection.cursor()
@@ -147,12 +168,16 @@ def binary_search(arr, x):
     return -1
 
 def main():
-    db_connection = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="password",
-        database="banking_system"
-    )
+    try:
+        db_connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="password",
+            database="banking_system"
+        )
+    except mysql.connector.Error as err:
+        logging.error(f"Error connecting to database: {err}")
+        raise
 
     root = tk.Tk()
     root.title("Banking Management System")
@@ -271,6 +296,12 @@ def main():
             balance = customer.balance_inquiry()
             messagebox.showinfo("Balance", f"Your balance is: {balance}")
 
+        def transaction_history():
+            transactions = customer.transaction_history()
+            transactions_text.delete(1.0, tk.END)
+            for transaction in transactions:
+                transactions_text.insert(tk.END, f"Amount: {transaction[0]}, Type: {transaction[1]}, Date: {transaction[2]}\n")
+
         tk.Label(customer_win, text="Amount").grid(row=0, column=0)
         amount_entry = tk.Entry(customer_win)
         amount_entry.grid(row=0, column=1)
@@ -278,6 +309,10 @@ def main():
         tk.Button(customer_win, text="Deposit", command=deposit).grid(row=1, column=0)
         tk.Button(customer_win, text="Withdraw", command=withdraw).grid(row=1, column=1)
         tk.Button(customer_win, text="Balance Inquiry", command=balance_inquiry).grid(row=2, column=0, columnspan=2)
+        tk.Button(customer_win, text="Transaction History", command=transaction_history).grid(row=3, column=0, columnspan=2)
+
+        transactions_text = tk.Text(customer_win, height=10, width=50)
+        transactions_text.grid(row=4, column=0, columnspan=2)
 
     tk.Label(root, text="User Type").grid(row=0, column=0)
     user_type_var = tk.StringVar()

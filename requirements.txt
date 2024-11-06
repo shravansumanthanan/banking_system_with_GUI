@@ -3,3 +3,5 @@ numpy
 matplotlib
 tkinter
 random
+bcrypt
+logging
