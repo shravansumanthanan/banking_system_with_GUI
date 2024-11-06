@@ -13,6 +13,14 @@ This project is a banking management system implemented in Python. It provides f
 - Professional GUI for user interaction
 - Secure login and authentication for admin and customer accounts
 - Role-based access control to restrict functionalities based on user type (admin or customer)
+- Error handling for database connection issues
+- Data validation for user input
+- Password hashing for sensitive user data
+- Feedback for deposit and withdraw functions
+- Exception handling for database and user input errors
+- Logging mechanism for system activity, errors, and important events
+- Transaction history feature for customers
+- Integration of data visualization into Admin dashboard
 
 ## Setup Instructions
 

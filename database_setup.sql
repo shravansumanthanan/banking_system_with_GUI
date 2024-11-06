@@ -11,7 +11,9 @@ CREATE TABLE customers (
     phone_number VARCHAR(20) NOT NULL,
     age INT NOT NULL,
     country VARCHAR(255) NOT NULL,
-    dob DATE NOT NULL
+    dob DATE NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE transactions (
