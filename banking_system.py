@@ -1,5 +1,6 @@
 import mysql.connector
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 import tkinter as tk
 from tkinter import messagebox
@@ -70,6 +71,20 @@ class Admin:
     def is_valid_age_and_city(self, dob, city):
         # Implement age and city validation logic here
         return True
+
+    def data_analysis(self):
+        cursor = self.db_connection.cursor()
+        query = "SELECT * FROM customers"
+        cursor.execute(query)
+        data = cursor.fetchall()
+        cursor.close()
+
+        df = pd.DataFrame(data, columns=['id', 'name', 'balance', 'gender', 'city', 'phone_number', 'age', 'country', 'dob', 'username', 'password'])
+
+        # Example analysis: Calculate average balance by gender
+        avg_balance_by_gender = df.groupby('gender')['balance'].mean()
+
+        return avg_balance_by_gender
 
 class Customer:
     def __init__(self, db_connection, account_id):

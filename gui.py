@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from banking_system import Admin, Customer, visualize_data
+from banking_system import Admin
 
 class BankingGUI:
     def __init__(self, root, db_connection):
@@ -79,9 +80,10 @@ class BankingGUI:
         tk.Button(admin_win, text="Update Account", command=lambda: self.update_account(admin, account_id_entry, name_entry, balance_entry, gender_entry, city_entry, phone_number_entry, age_entry, country_entry, dob_entry)).grid(row=9, column=1)
         tk.Button(admin_win, text="Delete Account", command=lambda: self.delete_account(admin, account_id_entry)).grid(row=10, column=0)
         tk.Button(admin_win, text="View All Accounts", command=lambda: self.view_all_accounts(admin)).grid(row=10, column=1)
+        tk.Button(admin_win, text="Data Analysis", command=lambda: self.data_analysis(admin)).grid(row=11, column=0, columnspan=2)
 
         self.accounts_text = tk.Text(admin_win, height=10, width=50)
-        self.accounts_text.grid(row=11, column=0, columnspan=2)
+        self.accounts_text.grid(row=12, column=0, columnspan=2)
 
     def create_account(self, admin, name_entry, balance_entry, gender_entry, city_entry, phone_number_entry, age_entry, country_entry, dob_entry):
         name = name_entry.get()
@@ -118,6 +120,14 @@ class BankingGUI:
         self.accounts_text.delete(1.0, tk.END)
         for account in accounts:
             self.accounts_text.insert(tk.END, f"ID: {account[0]}, Name: {account[1]}, Balance: {account[2]}, Gender: {account[3]}, City: {account[4]}, Phone Number: {account[5]}, Age: {account[6]}, Country: {account[7]}, DOB: {account[8]}\n")
+
+    def data_analysis(self, admin):
+        results = admin.data_analysis()
+        result_win = tk.Toplevel(self.root)
+        result_win.title("Data Analysis Results")
+        result_text = tk.Text(result_win, height=10, width=50)
+        result_text.grid(row=0, column=0, columnspan=2)
+        result_text.insert(tk.END, results)
 
     def create_customer_window(self, customer):
         customer_win = tk.Toplevel(self.root)
