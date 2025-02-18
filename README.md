@@ -2,7 +2,7 @@
 
 ## Project Description
 
-This project is a banking management system implemented in Python. It provides functionalities for creating, updating, and deleting customer accounts, as well as performing basic banking operations such as deposit, withdrawal, and balance inquiry. The system uses MySQL to store customer data and transaction history. It also includes data visualization features using numpy and matplotlib, and a professional GUI for user interaction.
+This project is a banking management system implemented in Python. It provides functionalities for creating, updating, and deleting customer accounts, as well as performing basic banking operations such as deposit, withdrawal, and balance inquiry. The system uses MySQL to store customer data and transaction history. It also includes data visualization features using numpy and matplotlib, and a professional GUI for user interaction. Additionally, the project includes data analysis features using numpy and pandas.
 
 ## Features
 
@@ -10,6 +10,7 @@ This project is a banking management system implemented in Python. It provides f
 - Perform basic banking operations: deposit, withdrawal, and balance inquiry
 - Store customer data and transaction history in MySQL database
 - Data visualization using numpy and matplotlib
+- Data analysis using numpy and pandas
 - Professional GUI for user interaction
 - Secure login and authentication for admin and customer accounts
 - Role-based access control to restrict functionalities based on user type (admin or customer)
@@ -51,3 +52,9 @@ This project is a banking management system implemented in Python. It provides f
    ```
 
 3. Use the GUI to interact with the system.
+
+## Using the Data Analysis Feature
+
+1. Log in as an admin.
+2. In the admin dashboard, click on the "Data Analysis" button.
+3. The results of the data analysis will be displayed in a new window.
